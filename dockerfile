@@ -28,7 +28,7 @@ RUN curl -SL --output vs_community.exe https://aka.ms/vs/16/release/vs_community
 # Install all packages, e.g  Visual Studio, PLCNext CLI/SDK...
 RUN ./vs_community.exe --installPath ${VS_PATH} --add Microsoft.VisualStudio.Workload.ManagedDesktop --quiet --norestart --nocache modify
 RUN ./vs_community.exe modify --installPath ${VS_PATH} --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --quiet --norestart --nocache modify
-RUN msiexec /i ${ARG PLCNEXT_VS} /quiet
+RUN msiexec /i ${PLCNEXT_VS} /quiet
 RUN Expand-Archive -Path ${PLCNEXT_CLI} -DestinationPath plcli
 RUN setx "path" "%path%C:\plcnext\plcli\PLCnCLI;" && setx "path" "%path%${VS_PATH}\MSBuild\Current\bin\;"
 RUN plcncli install sdk -d C:\sdk -p ${PLCNEXT_SDK} | Out-Null
