@@ -20,7 +20,7 @@ COPY packages\* C:\\plcnext
 #VOLUME C:\solution
 
 # Download Visual Studio
-RUN Invoke-WebRequest -URI $env:VS_URL  -OutFile vs.exe
+RUN Invoke-WebRequest -URI $env:VS_URL -OutFile vs.exe
 
 # Install all packages, e.g  Visual Studio, PLCNext CLI/SDK...
 RUN ./vs.exe --installPath ${VS_PATH} --add Microsoft.VisualStudio.Workload.ManagedDesktop --quiet --norestart --nocache modify
