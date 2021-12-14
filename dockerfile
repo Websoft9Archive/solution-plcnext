@@ -23,7 +23,7 @@ COPY packages\* C:\plcnext
 WORKDIR C:\plcnext
 
 # Download Visual Studio 2019 community installer from Microsoft
-RUN curl -SL --output vs_community.exe https://aka.ms/vs/16/release/vs_community.exe 
+RUN (new-object System.Net.WebClient).DownloadFile('https://aka.ms/vs/16/release/vs_community.exe','C:\plcnext\vs_community.exe')
 
 # Install all packages, e.g  Visual Studio, PLCNext CLI/SDK...
 RUN ./vs_community.exe --installPath ${VS_PATH} --add Microsoft.VisualStudio.Workload.ManagedDesktop --quiet --norestart --nocache modify
