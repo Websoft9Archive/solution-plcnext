@@ -9,25 +9,18 @@ ARG PLCNEXT_CLI=plcli.zip
 ARG PLCNEXT_SDK=plsdk.tar.xz
 ARG PLCNEXT_VS=plvs.msi
 
-# You can set your VS directory
-ENV VS_PATH C:\minVS
-
-# Build destination directory
-RUN New-Item C:\solution -type directory
-#VOLUME ["C:\\solution"]
+ENV VS_PATH "C:\minVS"
+ENV VS_URL "https://aka.ms/vs/16/release/vs_community.exe" 
 
 SHELL ["powershell", "-command"]
 
-# Copy packages to workdir
-RUN New-Item C:\plcnext -type directory
+WORKDIR "C:\plcnext"
 COPY packages\* C:\\plcnext
 
-WORKDIR "C:\plcnext"
+#VOLUME C:\solution
 
-RUN ls
-
-# Download Visual Studio 2019 community installer from Microsoft
-RUN Invoke-WebRequest -URI https://aka.ms/vs/16/release/vs_community.exe -OutFile vs_community.exe
+# Download Visual Studio
+RUN Invoke-WebRequest -URI $env:VS_URL  -OutFile vs.exe
 
 # Install all packages, e.g  Visual Studio, PLCNext CLI/SDK...
 RUN ./vs_community.exe --installPath ${VS_PATH} --add Microsoft.VisualStudio.Workload.ManagedDesktop --quiet --norestart --nocache modify
