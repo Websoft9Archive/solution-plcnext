@@ -12,6 +12,9 @@ Visual Studio 微软官方的下载路径，例如："https://aka.ms/vs/16/relea
 
 > VS2019 Community
 
+## Volume
+
+目前预设一个挂载目录：c:/solution
 
 ## 运行容器
 
