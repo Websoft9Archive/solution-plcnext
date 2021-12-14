@@ -17,7 +17,7 @@ ENV VS_URL "https://aka.ms/vs/16/release/vs_community.exe"
 SHELL ["powershell", "-command"]
 
 WORKDIR "C:\plcnext"
-COPY packages\* C:\\plcnext
+COPY packages\* C:\\plcnext\
 
 VOLUME "C:\solution"
 
