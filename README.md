@@ -25,6 +25,9 @@ docker run -it --name containername tag:version -d
 ## 其他
 
 ```
-# 删除未运行的容器
+# 删除所有容器
 sudo docker rm $(sudo docker ps -a -q)
+
+# 清理镜像
+docker image prune -f
 ```
