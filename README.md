@@ -2,8 +2,16 @@
 
 ## 环境变量
 
-ENV VS_PATH "C:\minVS"  
-ENV VS_URL "https://aka.ms/vs/16/release/vs_community.exe"   
+#### VS_PATH
+
+Visual Studio 在镜像中的安装路径，例如："C:\minVS"   
+
+#### VS_URL
+
+Visual Studio 微软官方的下载路径，例如："https://aka.ms/vs/16/release/vs_community.exe"   
+
+> VS2019 Community
+
 
 ## 运行容器
 
