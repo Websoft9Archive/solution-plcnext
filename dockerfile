@@ -23,8 +23,7 @@ RUN Invoke-WebRequest -URI $env:VS_URL -OutFile vs.exe
 # Install all packages, e.g  Visual Studio, PLCNext CLI/SDK...
 RUN Start-Process vs.exe -ArgumentList '--installPath C:\minVS --add Microsoft.VisualStudio.Workload.CoreEditor --quiet --norestart' -wait -NoNewWindow
 RUN Start-Process vs.exe -ArgumentList 'modify --installPath C:\minVS --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --quiet --norestart' -wait -NoNewWindow
-RUN Start-Process msiexec.exe -ArgumentList '/i', '$env:PLCNEXT_VS', '/quiet', '/norestart' -NoNewWindow -Wait
-
+RUN Start-Process msiexec.exe -ArgumentList '/i', 'plvs.msi', '/quiet', '/norestart' -NoNewWindow -Wait
 RUN Expand-Archive -Path $env:PLCNEXT_CLI -DestinationPath plcli
 
 #RUN setx "path" "%path%C:\plcnext\plcli\PLCnCLI;" 
