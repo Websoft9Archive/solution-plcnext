@@ -30,7 +30,7 @@ RUN ./vs.exe modify --installPath ${VS_PATH} --add Microsoft.VisualStudio.Compon
 RUN Start-Process msiexec.exe -ArgumentList '/i', '$env:PLCNEXT_VS', '/quiet', '/norestart' -NoNewWindow -Wait
 RUN Expand-Archive -Path $env:PLCNEXT_CLI -DestinationPath plcli
 WORKDIR "C:\plcnext\plcli\PLCnCLI"
-RUN ./plcncli.exe install sdk -d C:\sdk -p C:\plcnext\plsdk.tar.xz | Out-Null
+RUN ./plcncli.exe install sdk -d C:\sdk -p C:\plcnext\$env:PLCNEXT_SDK | Out-Null
 
 ENV PATH C:\minVS\MSBuild\Current\bin:$PATH
 ENV PATH C:\plcnext\plcli\PLCnCLI:$PATH
