@@ -29,13 +29,11 @@ RUN ./vs.exe --installPath ${VS_PATH} --add Microsoft.VisualStudio.Workload.Mana
 RUN ./vs.exe modify --installPath ${VS_PATH} --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --quiet --norestart --nocache modify
 RUN Start-Process msiexec.exe -ArgumentList '/i', '$env:PLCNEXT_VS', '/quiet', '/norestart' -NoNewWindow -Wait
 RUN Expand-Archive -Path $env:PLCNEXT_CLI -DestinationPath plcli
+WORKDIR "C:\plcnext\plcli\PLCnCLI"
+RUN ./plcncli.exe install sdk -d C:\sdk -p C:\plcnext\plsdk.tar.xz | Out-Null
+
 ENV PATH C:\minVS\MSBuild\Current\bin:$PATH
 ENV PATH C:\plcnext\plcli\PLCnCLI:$PATH
-WORKDIR "C:\plcnext\plcli\PLCnCLI"
-
-RUN plcncli install sdk -d C:\sdk -p C:\plcnext\plsdk.tar.xz | Out-Null
-
-RUN ls
 
 # Define the entry point for the docker container.
 ENTRYPOINT ["powershell.exe", "-NoLogo", "-ExecutionPolicy", "Bypass"]
