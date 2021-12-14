@@ -12,15 +12,19 @@ ARG PLCNEXT_VS=plvs.msi
 # You can set your VS directory
 ENV VS_PATH C:\minVS
 
-VOLUME ["C:\solution"]
+# Build destination directory
+RUN New-Item C:\solution -type directory
+#VOLUME ["C:\\solution"]
 
 SHELL ["powershell", "-command"]
 
 # Copy packages to workdir
 RUN New-Item C:\plcnext -type directory
-COPY packages\* C:\plcnext
+COPY packages\* C:\\plcnext
 
-WORKDIR C:\plcnext
+WORKDIR "C:\plcnext"
+
+RUN ls
 
 # Download Visual Studio 2019 community installer from Microsoft
 RUN (new-object System.Net.WebClient).DownloadFile('https://aka.ms/vs/16/release/vs_community.exe','C:\plcnext\vs_community.exe')
