@@ -29,12 +29,12 @@ RUN Expand-Archive -Path $env:PLCNEXT_CLI -DestinationPath plcli
 # Configure ENV
 RUN `
     $path = [Environment]::GetEnvironmentVariable('Path', 'Machine') ;`
-    $newpath = $path + ';C:\minVS\MSBuild\Current\bin\'; `
+    $newpath = $path + ';C:\minVS\MSBuild\Current\bin\;C:\plcnext\plcli\PLCnCLI\'; `
     [Environment]::SetEnvironmentVariable('Path', $newpath, 'Machine') ;`
     $env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') 
 
 # Install SDK
-RUN plcncli install sdk -d C:\sdk -p plsdk.tar.xz | Out-Null
+RUN plcncli install sdk -d C:\plcnext\sdk -p $env:PLCNEXT_SDK | Out-Null
 
 VOLUME "C:\solution"
 
