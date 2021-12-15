@@ -19,7 +19,8 @@ Visual Studio 微软官方的下载路径，例如："https://aka.ms/vs/16/relea
 ## 运行容器
 
 ```
-docker run -it --name containername tag:version -d
+docker run -it --name containername -d -v path:c:\solution tag:version
+docker exec -it cdl powershell msbuild c:\solution\IIoT_Library.sln
 ```
 
 ## 其他
