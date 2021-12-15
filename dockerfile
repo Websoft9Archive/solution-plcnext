@@ -15,7 +15,7 @@ ENV VS_URL "https://aka.ms/vs/16/release/vs_community.exe"
 SHELL ["powershell", "-Command"]
 
 WORKDIR "C:\plcnext"
-COPY packages\* C:\\plcnext\
+COPY packages\* C:\plcnext\
 
 # Download Visual Studio
 RUN Invoke-WebRequest -URI $env:VS_URL -OutFile vs.exe
