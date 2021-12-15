@@ -20,14 +20,20 @@ COPY packages\* C:\\plcnext\
 # Download Visual Studio
 RUN Invoke-WebRequest -URI $env:VS_URL -OutFile vs.exe
 
-# Install all packages, e.g  Visual Studio, PLCNext CLI/SDK...
+# Install VS, PLCNext CLI
 RUN Start-Process vs.exe -ArgumentList '--installPath C:\minVS --add Microsoft.VisualStudio.Workload.ManagedDesktop --quiet --norestart' -wait -NoNewWindow
 RUN Start-Process vs.exe -ArgumentList 'modify --installPath C:\minVS --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --quiet --norestart' -wait -NoNewWindow
 RUN Start-Process msiexec.exe -ArgumentList '/i', 'plvs.msi', '/quiet', '/norestart' -NoNewWindow -Wait
 RUN Expand-Archive -Path $env:PLCNEXT_CLI -DestinationPath plcli
-# Configure ENV of PATH
-RUN C:\plcnext\env.ps1
-RUN echo $env:PATH
+
+# Configure ENV
+RUN `
+    $path = [Environment]::GetEnvironmentVariable('Path', 'Machine') ;`
+    $newpath = $path + ';C:\minVS\MSBuild\Current\bin\'; `
+    [Environment]::SetEnvironmentVariable('Path', $newpath, 'Machine') ;`
+    $env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') 
+
+# Install SDK
 RUN plcncli install sdk -d C:\sdk -p plsdk.tar.xz | Out-Null
 
 VOLUME "C:\solution"
