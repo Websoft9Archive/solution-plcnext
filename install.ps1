@@ -5,10 +5,11 @@ Start-Process -FilePath "git.exe" -ArgumentList " /SP- /VERYSILENT /SUPPRESSMSGB
 
 
 # Install GitLab-runner
-Add-Type -AssemblyName System.Web
-$password=[System.Web.Security.Membership]::GeneratePassword(10,0)
+$password=Get-Random
 echo $password | out-file -filepath password.txt
 
+new-item GitLab-Runner -type directory
+cd GitLab-Runner
 $runner_url="https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-windows-amd64.exe"
 Invoke-WebRequest -URI $runner_url -OutFile gitlab-runner.exe
 .\gitlab-runner.exe install --user root --password $password
