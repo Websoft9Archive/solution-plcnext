@@ -11,3 +11,6 @@ cd GitLab-Runner
 Invoke-WebRequest -URI $runner_url -OutFile gitlab-runner.exe
 .\gitlab-runner.exe install
 .\gitlab-runner.exe start
+
+# Use the register template
+Copy-Item "../config.toml" -Destination "./"
