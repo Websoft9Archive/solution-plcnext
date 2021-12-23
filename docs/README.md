@@ -90,12 +90,31 @@ Dockerfile 的设计除了能够顺利安装组件清单之外，还需注意：
 
 管理员所需的操作包括：部署、配置、修改源码以及故障诊断
 
+### 设置 GitLab CI/CD
+
 ### 部署 CI
 
 1. 下载项目到 Windows 宿主机目录，例如：c:/plcnext
-2. 通过 Powershell 窗口安装 Gitlab-Runner
-3. 获取 GitLab token，然后配置到 Gitlab-Runner 中
-4. 在 Gitlab-Runner 中连接所需 CI 的目标项目 URL
+
+2. 以管理员身份的运行 Powershell 窗口，然后 CI 环境
+   ```
+   ./install.ps1
+   ```
+3. 等待安装环境结束（拉取 Windows Server 镜像需要大约20分钟时间）
+
+3. 浏览器登录到 GitLab 后台，获取 GitLab token
+
+4. 修改 Gitlab-Runner 的配置文件 `config.toml` 下面几项的值
+
+   * url
+   * token
+
+5. 分别运行如下命令
+   ```
+   ./gitlab-runner.exe stop
+   ./gitlab-runner.exe start
+   ```
+6. GitLab-Runner 会对远程的 GitLab 仓库进行一个注册动作，把自身 IP 写到 GitLab 中
 
 ### 镜像
 
@@ -142,7 +161,15 @@ docker image prune -f
 
 当前不可以，因为 PLCnext Technology Development Tools for Visual Studio.msi 只支持 Visual Studio 2019
 
+#### Gitlab-Runner 与 GitLab 的版本兼容性如何？
 
+GitLab Runner 版本应与 GitLab 主要和次要版本保持同步。较老的跑步者可能仍然使用较新的 GitLab 版本，反之亦然。但是，如果存在版本差异，则功能可能不可用或无法正常工作。  
+
+总之，尽量不断更新 Gitlab-Runner
+
+#### 一个仓库是否可以对应多个同名 Runner?
+
+不可以，会覆盖
 
 ## 参考文档
 
