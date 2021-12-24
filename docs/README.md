@@ -2,7 +2,7 @@
 
 文档版本：v1.0  
 
-更新时间：2021-12-22  
+更新时间：2021-12-24  
 
 技术支持：help@websoft9.com  
 
@@ -102,7 +102,8 @@ Dockerfile 的设计除了能够顺利安装组件清单之外，还需注意：
    ```
 3. 等待安装环境结束（拉取 Windows Server 镜像需要大约20分钟时间）
 
-3. 浏览器登录到 GitLab 后台，获取 GitLab token
+4. 浏览器登录到 GitLab 后台，获取 GitLab token
+   ![](E:\Develop\plcn\docs\images\git-token.png)
 
 4. 修改 Gitlab-Runner 的配置文件 `config.toml` 下面几项的值
 
