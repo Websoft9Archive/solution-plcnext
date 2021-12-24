@@ -105,10 +105,8 @@ Dockerfile 的设计除了能够顺利安装组件清单之外，还需注意：
 3. 浏览器登录到 GitLab 后台，获取 GitLab token
 ![image](https://user-images.githubusercontent.com/43192516/147311858-71c78bda-662f-415c-9835-771daa85dd62.png)
 
-![image](https://user-images.githubusercontent.com/43192516/147311341-06689f8c-e806-4a29-8f0b-7d133696a963.png)
-
 4. 修改 Gitlab-Runner 的配置文件 `config.toml` 下面几项的值
-
+![image](https://user-images.githubusercontent.com/43192516/147311341-06689f8c-e806-4a29-8f0b-7d133696a963.png)
    * url
    * token
 
