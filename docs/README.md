@@ -36,7 +36,7 @@ plcncli build --path project -t AXCF2152
 
 ### 整体架构
 
-![](E:\Develop\plcn\docs\images\architecture.png)
+![](../images/architecture.png)
 
 
 
@@ -147,7 +147,7 @@ GitLab CI/CI 支持：全局级（ [shared runners](https://docs.gitlab.com/ee/c
 3. 等待安装环境结束（拉取 Windows Server 镜像需要大约20分钟时间）
 
 4. 浏览器登录到 GitLab 后台，获取 GitLab token
-   ![](E:\Develop\plcn\docs\images\git-token.png)
+   ![](../images/git-token.png)
 
 4. 修改 Gitlab-Runner 的配置文件 `config.toml` 下面几项的值
 
