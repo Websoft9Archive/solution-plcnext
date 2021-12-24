@@ -118,7 +118,48 @@ Dockerfile 的设计除了能够顺利安装组件清单之外，还需注意：
 
 ###  CI jobs
 
-本项目的 CI jobs主要通过  image.gitlab-ci.yml 和  msbuild.gitlab-ci.yml 两个文件实现。  
+本项目的 CI jobs主要通过  .gitlab-ci.yml 编排文件实现。  
+
+GitLab CI 编排的文件原理：多个 Job 组成，每个 Job 需设置其 Stage 的值（build, test, deploy等）以及触发条件。  
+
+每次项目提交的适合，Runner 会将 .gitlab-ci.yml 中的 Jobs 启动到流水线中开始运作。  
+
+下面是一个 .gitlab-ci.yml 文件模板：  
+
+```
+image-job:
+  stage: build
+  only:
+    changes:
+      - docker/*
+  script:
+    - echo "build Image start"
+    - cd docker
+    - docker build -t plcn .
+    - echo "build image success!"
+
+solution-job:
+  stage: build
+  only:
+    - main
+  script:
+    - echo "build sln start"
+    - docker rm -f plcn
+    - docker run -it --rm -d --name plcn -v "$(pwd):C:\solution" plcn
+    - docker exec plcn powershell C:\minVS\MSBuild\Current\bin\MSbuild.exe c:\solution\IIoT_Library.sln
+    - echo "MSbuild vsproject success!"
+
+test-job:
+  stage: test
+  script:
+    - echo "test"
+
+deploy-job:
+  stage: deploy
+  script:
+    - echo "deploy"
+```
+
 
 ## 用户手册
 
@@ -215,6 +256,41 @@ GitLab Runner 版本应与 GitLab 主要和次要版本保持同步。较老的�
 #### 一个仓库是否可以对应多个同名 Runner?
 
 不可以，会覆盖
+
+#### Runner 配置文件中如何支持多个仓库？
+
+每增加一个仓库就需要 Register 一次，下面是两个仓库的配置文件
+```
+concurrent = 1
+check_interval = 0
+
+[session_server]
+  session_timeout = 1800
+
+[[runners]]
+  name = "plcn build"
+  url = "http://43.154.150.20/"
+  token = "ykZp3oaZtDNaQz9qiHMo"
+  executor = "shell"
+  shell = "powershell"
+  [runners.custom_build_dir]
+  [runners.cache]
+    [runners.cache.s3]
+    [runners.cache.gcs]
+    [runners.cache.azure]
+
+[[runners]]
+  name = "test"
+  url = "http://43.154.150.20"
+  token = "3N8Q_QL5GrLB-tyYtmSg"
+  executor = "shell"
+  shell = "pwsh"
+  [runners.custom_build_dir]
+  [runners.cache]
+    [runners.cache.s3]
+    [runners.cache.gcs]
+    [runners.cache.azure]
+```
 
 ## 参考文档
 
