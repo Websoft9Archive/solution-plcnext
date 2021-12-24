@@ -116,6 +116,8 @@ Dockerfile 的设计除了能够顺利安装组件清单之外，还需注意：
 * 镜像构建触发：修改 .gitlab-ci.yml 或 更新包
 * 项目编译触发：修改 .gitlab-ci.yml 或 开发者Commit 代码到指定的分子（例如：Dev）
 
+另外，目前要求支持所有分支的触发（GitLab CI 默认支持所有分支）
+
 ###  CI jobs
 
 本项目的 CI jobs主要通过  .gitlab-ci.yml 编排文件实现。  
