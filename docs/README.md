@@ -34,7 +34,7 @@ plcncli build --path project -t AXCF2152
 
 ## 设计
 
-### 架构
+### 整体架构
 
 ![](E:\Develop\plcn\docs\images\architecture.png)
 
@@ -43,12 +43,30 @@ plcncli build --path project -t AXCF2152
 架构要点说明：
 
 * 以 GitLab 作为远端项目源码仓库，GitLab-Runner 作为 CI 的调度器
+
 * Windows 容器作为构建编译环境
+
 * 容器镜像和项目编译均实现 CI
 
-### 组件清单
+  
 
-经过实际调研和充分测试，编译环境清单如下：
+架构实施说明：
+
+* GitLab-Runner 与 编译环境同在一台主机上
+
+* .gitlab-ci.yml 作为项目仓库的组成部分
+
+* 镜像环境的依赖包和编译结果包采用更合理的存放方式
+
+  
+
+### 编译环境
+
+由于本项目采用 Window 容器作为编译环境，因此编译环境的设计工作主要围绕 Dockerfile 进行。
+
+#### 环境清单
+
+经过实际调研和充分测试，编译环境所需的清单如下：
 
 1. 宿主机系统：Windows 2019 数据中心版（含Container）
 2. Windows 容器镜像：mcr.microsoft.com/windows/servercore:ltsc2019
@@ -58,9 +76,7 @@ plcncli build --path project -t AXCF2152
 
 > PLCNext plugin  目前仅支持 VS2019
 
-
-
-### Dockerfile
+#### Dockerfile
 
 Dockerfile 的设计除了能够顺利安装组件清单之外，还需注意：
 
@@ -74,11 +90,35 @@ Dockerfile 的设计除了能够顺利安装组件清单之外，还需注意：
 1. 采用微软官方原生操作系统
 2. 杜绝不必要的组件安装
 
-### image-ci.yml
+**可维护**
 
-## msbuild.yml
+1. 组件升级
+2. 组件修改
 
+#### 环境维护
 
+镜像构建和项目编译后，都会产生一些中间结果文件：
+
+* 多个可用的镜像版本
+* 失败的镜像
+* 不需要的容器持久化存储文件
+* 一次性中间容器
+* 项目编译缓存：拉取的项目、临时文件、编译结果
+
+这些不需要的文件，需考虑及时清理。  
+
+另外，环境中的组件要提供便捷的升级方案。  
+
+### 触发机制
+
+自动化CI的触发条件需满足客户的开发流程。本项目当前的触发条件为：  
+
+* 镜像构建触发：修改 .gitlab-ci.yml 或 更新包
+* 项目编译触发：修改 .gitlab-ci.yml 或 开发者Commit 代码到指定的分子（例如：Dev）
+
+###  CI jobs
+
+本项目的 CI jobs主要通过  image.gitlab-ci.yml 和  msbuild.gitlab-ci.yml 两个文件实现。  
 
 ## 用户手册
 
@@ -91,6 +131,10 @@ Dockerfile 的设计除了能够顺利安装组件清单之外，还需注意：
 管理员所需的操作包括：部署、配置、修改源码以及故障诊断
 
 ### 设置 GitLab CI/CD
+
+GitLab CI/CI 支持：全局级（ [shared runners](https://docs.gitlab.com/ee/ci/runners/runners_scope.html)）、仓库级等作用域模式。  
+
+本项目中我们使用全局级作用域的模式，即所有 GitLab 中的仓库都具备 CI/CD 能力
 
 ### 部署 CI
 
