@@ -18,3 +18,8 @@ Edit config.toml
 ![image](https://user-images.githubusercontent.com/43192516/147311341-06689f8c-e806-4a29-8f0b-7d133696a963.png)
 
 ### gitlab project set
+
+
+## Exeute gitlab-runner
+
+upload .gitlab-ci.yml
