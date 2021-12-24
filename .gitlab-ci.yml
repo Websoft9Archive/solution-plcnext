@@ -1,0 +1,24 @@
+stages:
+  - build image
+  - build sln
+
+buildImage:
+  stage: build image
+  only:
+    - main
+  script:
+    - echo "build Image!"
+	- cd docker
+	- docker build -t plcn .
+    - echo "build image success!"
+
+buildSln:
+  stage: build sln
+  only:
+    - main
+  script:
+    - echo "build sln!"
+	- docker rm -f plcn
+	- docker run -it --rm -d -name plcn -v "$(pwd):C:\solution" plcn
+	- docker exec plcn powershell msbuild c:\solution\IIoT_Library.sln
+    - echo "MSbuild success!"
