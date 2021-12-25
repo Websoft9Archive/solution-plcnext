@@ -119,8 +119,10 @@ Dockerfile 的设计除了能够顺利安装组件清单之外，还需注意：
 另外，目前要求支持所有分支的触发（GitLab CI 默认支持所有分支）
 
 Gitlab-runner默认只有提交tags时才触发，为了支持任何提交，需要在gitlab工程做如下设置：
+
    ![](https://libs.websoft9.com/Websoft9/DocsPicture/zh/gitlab/gitlab-settrigger1-websoft9.png)
-   ![](https://libs.websoft9.com/Websoft9/DocsPicture/zh/gitlab/gitlab-settrigger2websoft9.png)
+   
+   ![](https://libs.websoft9.com/Websoft9/DocsPicture/zh/gitlab/gitlab-settrigger2-websoft9.png)
    
 ###  CI jobs
 
