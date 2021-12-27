@@ -24,13 +24,13 @@ RUN Invoke-WebRequest -URI $env:VS_URL -OutFile vs.exe
 
 # Install VS, PLCNext CLI
 RUN `
-    Start-Process vs.exe -ArgumentList '--installPath $env:VS_INSTALLATION_DIR `
+    Start-Process vs.exe -ArgumentList '--installPath C:\minVS `
     --add Microsoft.Net.Component.4.TargetingPack `
     --add Microsoft.VisualStudio.Component.Roslyn.Compiler `
     --add Microsoft.VisualStudio.Component.VC.14.20.x86.x64 `
     --quiet --norestart' -wait -NoNewWindow
 
-RUN Start-Process msiexec.exe -ArgumentList '/i', '$env:PLCNEXT_VS', '/quiet', '/norestart' -NoNewWindow -Wait
+RUN Start-Process msiexec.exe -ArgumentList '/i', 'plvs.msi', '/quiet', '/norestart' -NoNewWindow -Wait
 RUN Expand-Archive -Path $env:PLCNEXT_CLI -DestinationPath plcli
 
 # Configure PLCNext cli ENV
