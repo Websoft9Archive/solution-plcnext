@@ -26,7 +26,7 @@ RUN Invoke-WebRequest -URI $env:VS_URL -OutFile vs.exe
 RUN `
     Start-Process vs.exe -ArgumentList '--installPath $env:VS_INSTALLATION_DIR `
     --add Microsoft.Net.Component.4.TargetingPack `
-    --add Microsoft.Net.Component.4.TargetingPack `
+    --add Microsoft.VisualStudio.Component.Roslyn.Compiler `
     --add Microsoft.VisualStudio.Component.VC.14.20.x86.x64 `
     --quiet --norestart' -wait -NoNewWindow
 
