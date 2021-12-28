@@ -1,20 +1,22 @@
-image-job:
+image-all-job:
   stage: build
   only:
     changes:
       - packages/*
       - dockerfile
+      - .gitlab-ci.yml
   script:
     - echo "build Image start"
-    - docker build -t plcn .
+    - docker build -t plcn:latest .
     - echo "build image success"
 
-test-job:
-  stage: test
-  script:
-    - echo "test"
 
-deploy-job:
-  stage: deploy
+image-tag-job:
+  stage: build
+  only:
+    - tags
   script:
-    - echo "deploy"
+    - echo "build Image start"
+    - docker build -t plcn:latest .
+    - docker build -t plcn:"$CI_COMMIT_REF_NAME" .
+    - echo "build image success"
