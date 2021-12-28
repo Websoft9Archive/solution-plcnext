@@ -22,6 +22,9 @@ COPY packages\* C:\plcnext\
 # Download Visual Studio
 RUN Invoke-WebRequest -URI $env:VS_URL -OutFile vs.exe
 
+# There is space in msi file name, rename file to support it
+RUN get-childItem *.msi  | rename-item -newname $env:PLCNEXT_VS
+
 # Install VS, PLCNext CLI
 RUN `
     Start-Process vs.exe -ArgumentList '--installPath C:\minVS `
