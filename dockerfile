@@ -58,10 +58,7 @@ RUN `
 
 
 # Delete install files, image size optimization
-RUN Remove-Item * -Include *.zip
-RUN Remove-Item * -Include *.msi
-RUN Remove-Item * -Include *.xz
-RUN Remove-Item * -Include *.exe
+RUN Remove-Item *.zip,*.msi,*.xz,*.exe
 
 VOLUME "C:\solution"
 
