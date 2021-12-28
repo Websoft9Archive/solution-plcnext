@@ -40,11 +40,16 @@ RUN `
     [Environment]::SetEnvironmentVariable('Path', $newpath, 'Machine') ;`
     $env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') 
 
+# SDKS Directory
+RUN new-item -path C:\plcnext\ -name sdks -type directory
+RUN Invoke-Command -ScriptBlock {$SDK_LIST= Get-ChildItem -Path C:\plcnext\ -Name  -Filter *.xz;foreach ($file in $SDK_LIST){ plcncli install sdk -d C:\plcnext\sdks\$file -p $file | Out-File C:\plcnext\installsdk.log}}
+
 # List all the sdk names
-ENV SDK_LIST Get-ChildItem -Path C:\plcnext -Recurse -ErrorAction SilentlyContinue -Filter *.tar.xz 
+#ENV SDK_LIST Get-ChildItem -Path C:\plcnext -Recurse -ErrorAction SilentlyContinue -Filter *.tar.xz 
+
 
 # Install sdks
-RUN Invoke-Command -ScriptBlock {plcncli install sdk -d C:\plcnext\sdk -p pxc-glibc-x86_64-mingw32-axcf2152-image-mingw-cortexa9t2hf-neon-axcf2152-toolchain-2021.0.tar.xz | Out-File C:\plcnext\installsdk.log}
+#RUN Invoke-Command -ScriptBlock {plcncli install sdk -d C:\plcnext\sdk -p pxc-glibc-x86_64-mingw32-axcf2152-image-mingw-cortexa9t2hf-neon-axcf2152-toolchain-2021.0.tar.xz | Out-File C:\plcnext\installsdk.log}
 #RUN Invoke-Command -ScriptBlock  {plcncli install sdk -d C:\plcnext\sdk2 -p pxc-glibc-x86_64-mingw32-axcf2152-image-mingw-cortexa9t2hf-neon-axcf2152-toolchain-2021.6.tar.xz | Out-File C:\plcnext\installsdk.log}
 
 VOLUME "C:\solution"
