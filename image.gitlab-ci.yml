@@ -2,23 +2,12 @@ image-job:
   stage: build
   only:
     changes:
-      - docker/*
+      - packages/*
+      - dockerfile
   script:
     - echo "build Image start"
-    - cd docker
     - docker build -t plcn .
-    - echo "build image success!"
-
-solution-job:
-  stage: build
-  only:
-    - main
-  script:
-    - echo "build sln start"
-    - docker rm -f plcn
-    - docker run -it --rm -d --name plcn -v "$(pwd):C:\solution" plcn
-    - docker exec plcn powershell C:\minVS\MSBuild\Current\bin\MSbuild.exe c:\solution\IIoT_Library.sln
-    - echo "MSbuild vsproject success!"
+    - echo "build image success"
 
 test-job:
   stage: test
