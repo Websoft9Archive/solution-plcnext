@@ -43,15 +43,13 @@ RUN `
     [Environment]::SetEnvironmentVariable('Path', $newpath, 'Machine') ;`
     $env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') 
 
-# Create SDKS Directory
-RUN new-item -path .\ -name sdks -type directory
-
 # Install package's all SDKS
 RUN `
     Invoke-Command -ScriptBlock {`
-    $SDK_LIST= Get-ChildItem -Path .\ -Name  -Filter *.xz;`
+    new-item -name sdks -type directory`
+    $SDK_LIST= Get-ChildItem -Name -Filter *.xz;`
     foreach ($file in $SDK_LIST){ `
-        $sdkname=$file.Split(".tar.xz")[0]
+        $sdkname=$file.Split(".tar.xz")[0]`
         plcncli install sdk -d .\sdks\$sdkname -p $file | Out-File .\installsdk.log`
     }`
   }
