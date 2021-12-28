@@ -48,10 +48,10 @@ RUN new-item -path C:\plcnext\ -name sdks -type directory
 RUN Invoke-Command -ScriptBlock {$SDK_LIST= Get-ChildItem -Path C:\plcnext\ -Name  -Filter *.xz;foreach ($file in $SDK_LIST){ plcncli install sdk -d C:\plcnext\sdks\$file -p $file | Out-File C:\plcnext\installsdk.log}}
 
 # Delete install files, image size optimization
-RUN Remove-Item * -Include *.zip -Recurse
-RUN Remove-Item * -Include *.msi -Recurse
-RUN Remove-Item * -Include *.xz -Recurse
-RUN Remove-Item * -Include *.exe -Recurse
+RUN Remove-Item * -Include *.zip
+RUN Remove-Item * -Include *.msi
+RUN Remove-Item * -Include *.xz
+RUN Remove-Item * -Include *.exe
 
 VOLUME "C:\solution"
 
