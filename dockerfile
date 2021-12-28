@@ -55,7 +55,6 @@ RUN `
     }`
   }
 
-
 # Delete install files, image size optimization
 RUN Remove-Item *.zip,*.msi,*.xz,*.exe
 
@@ -64,4 +63,3 @@ VOLUME "C:\solution"
 # Define the entry point for the docker container.
 #ENTRYPOINT ["powershell.exe", "-NoLogo", "-ExecutionPolicy", "Bypass"]
 ENTRYPOINT  ". C:\minVS\Common7\Tools\Launch-VsDevShell.ps1;powershell"
-
