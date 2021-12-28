@@ -40,9 +40,15 @@ RUN `
     [Environment]::SetEnvironmentVariable('Path', $newpath, 'Machine') ;`
     $env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') 
 
-# SDKS Directory
+# Create SDKS Directory
 RUN new-item -path C:\plcnext\ -name sdks -type directory
 RUN Invoke-Command -ScriptBlock {$SDK_LIST= Get-ChildItem -Path C:\plcnext\ -Name  -Filter *.xz;foreach ($file in $SDK_LIST){ plcncli install sdk -d C:\plcnext\sdks\$file -p $file | Out-File C:\plcnext\installsdk.log}}
+
+# Delete install files, image size optimization
+RUN Remove-Item * -Include *.zip -Recurse
+RUN Remove-Item * -Include *.msi -Recurse
+RUN Remove-Item * -Include *.xz -Recurse
+RUN Remove-Item * -Include *.exe -Recurse
 
 VOLUME "C:\solution"
 
