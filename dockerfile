@@ -51,7 +51,8 @@ RUN `
     Invoke-Command -ScriptBlock {`
     $SDK_LIST= Get-ChildItem -Path .\ -Name  -Filter *.xz;`
     foreach ($file in $SDK_LIST){ `
-        plcncli install sdk -d .\sdks\$file -p $file | Out-File .\installsdk.log`
+        $sdkname=$file.Split(".tar.xz")[0]
+        plcncli install sdk -d .\sdks\$sdkname -p $file | Out-File .\installsdk.log`
     }`
   }
 
