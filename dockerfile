@@ -27,11 +27,11 @@ RUN get-childItem *.msi  | rename-item -newname $env:PLCNEXT_VS
 
 # Install VS, PLCNext CLI
 RUN `
-    Start-Process vs.exe -ArgumentList '--installPath C:\minVS `
-    --add Microsoft.Net.Component.4.TargetingPack `
-    --add Microsoft.VisualStudio.Component.Roslyn.Compiler `
-    --add Microsoft.VisualStudio.Component.VC.14.20.x86.x64 `
-    --quiet --norestart' -wait -NoNewWindow
+    Start-Process vs.exe -ArgumentList "--installPath", "$env:VS_INSTALLATION_DIR", `
+    "--add", "Microsoft.Net.Component.4.TargetingPack", `
+    "--add", "Microsoft.VisualStudio.Component.Roslyn.Compiler", `
+    "--add", "Microsoft.VisualStudio.Component.VC.14.20.x86.x64", `
+    "--quiet", "--norestart" -wait -NoNewWindow
 
 RUN Start-Process msiexec.exe -ArgumentList '/i', $env:PLCNEXT_VS, '/quiet', '/norestart' -NoNewWindow -Wait
 RUN Expand-Archive -Path $env:PLCNEXT_CLI -DestinationPath plcli
@@ -45,6 +45,8 @@ RUN `
 
 # Create SDKS Directory
 RUN new-item -path C:\plcnext\ -name sdks -type directory
+
+# Install package's all sdks
 RUN Invoke-Command -ScriptBlock {$SDK_LIST= Get-ChildItem -Path C:\plcnext\ -Name  -Filter *.xz;foreach ($file in $SDK_LIST){ plcncli install sdk -d C:\plcnext\sdks\$file -p $file | Out-File C:\plcnext\installsdk.log}}
 
 # Delete install files, image size optimization
