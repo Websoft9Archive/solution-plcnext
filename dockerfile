@@ -30,7 +30,7 @@ RUN `
     --add Microsoft.VisualStudio.Component.VC.14.20.x86.x64 `
     --quiet --norestart' -wait -NoNewWindow
 
-RUN Start-Process msiexec.exe -ArgumentList '/i', 'plvs.msi', '/quiet', '/norestart' -NoNewWindow -Wait
+RUN Start-Process msiexec.exe -ArgumentList '/i', $env:PLCNEXT_VS, '/quiet', '/norestart' -NoNewWindow -Wait
 RUN Expand-Archive -Path $env:PLCNEXT_CLI -DestinationPath plcli
 
 # Configure PLCNext cli ENV
@@ -45,7 +45,7 @@ ENV SDK_LIST Get-ChildItem -Path C:\plcnext -Recurse -ErrorAction SilentlyContin
 
 # Install sdks
 RUN Invoke-Command -ScriptBlock {plcncli install sdk -d C:\plcnext\sdk -p pxc-glibc-x86_64-mingw32-axcf2152-image-mingw-cortexa9t2hf-neon-axcf2152-toolchain-2021.0.tar.xz | Out-File C:\plcnext\installsdk.log}
-RUN Invoke-Command -ScriptBlock  {plcncli install sdk -d C:\plcnext\sdk2 -p pxc-glibc-x86_64-mingw32-axcf2152-image-mingw-cortexa9t2hf-neon-axcf2152-toolchain-2021.6.tar.xz | Out-File C:\plcnext\installsdk.log}
+#RUN Invoke-Command -ScriptBlock  {plcncli install sdk -d C:\plcnext\sdk2 -p pxc-glibc-x86_64-mingw32-axcf2152-image-mingw-cortexa9t2hf-neon-axcf2152-toolchain-2021.6.tar.xz | Out-File C:\plcnext\installsdk.log}
 
 VOLUME "C:\solution"
 
