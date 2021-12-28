@@ -11,13 +11,14 @@ LABEL Description="CI for PLCNext" Vendor="Websoft9" Version="0.9"
 ARG PLCNEXT_CLI=PLCnCLI.zip
 ARG PLCNEXT_VS=PLCnext-vs.msi
 ARG VS_INSTALLATION_DIR=C:\minVS
+ARG BASIC_DIR=C:\plcnext\
 
 ENV VS_URL "https://aka.ms/vs/16/release/vs_community.exe" 
 
 SHELL ["powershell", "-Command"]
 
-WORKDIR "C:\plcnext"
-COPY packages\* C:\plcnext\
+WORKDIR ${BASIC_DIR}
+COPY packages\* ${BASIC_DIR}
 
 # Download Visual Studio
 RUN Invoke-WebRequest -URI $env:VS_URL -OutFile vs.exe
@@ -44,10 +45,17 @@ RUN `
     $env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') 
 
 # Create SDKS Directory
-RUN new-item -path C:\plcnext\ -name sdks -type directory
+RUN new-item -path $env:BASIC_DIR -name sdks -type directory
 
-# Install package's all sdks
-RUN Invoke-Command -ScriptBlock {$SDK_LIST= Get-ChildItem -Path C:\plcnext\ -Name  -Filter *.xz;foreach ($file in $SDK_LIST){ plcncli install sdk -d C:\plcnext\sdks\$file -p $file | Out-File C:\plcnext\installsdk.log}}
+# Install package's all SDKS
+RUN `
+    Invoke-Command -ScriptBlock {`
+    $SDK_LIST= Get-ChildItem -Path C:\plcnext\ -Name  -Filter *.xz;`
+    foreach ($file in $SDK_LIST){ `
+        plcncli install sdk -d C:\plcnext\sdks\$file -p $file | Out-File C:\plcnext\installsdk.log`
+    }`
+  }
+
 
 # Delete install files, image size optimization
 RUN Remove-Item * -Include *.zip
@@ -60,3 +68,4 @@ VOLUME "C:\solution"
 # Define the entry point for the docker container.
 #ENTRYPOINT ["powershell.exe", "-NoLogo", "-ExecutionPolicy", "Bypass"]
 ENTRYPOINT  ". C:\minVS\Common7\Tools\Launch-VsDevShell.ps1;powershell"
+
