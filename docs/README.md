@@ -268,6 +268,12 @@ GitLab Runner 版本应与 GitLab 主要和次要版本保持同步。较老的�
 #### Runner 配置文件中如何支持多个仓库？
 
 每增加一个仓库就需要 Register 一次，下面是两个仓库的配置文件
+
+#### Gitlab-runner start 看起来正常，但状态仍然为 stopeed？
+
+最常见的原因：配置文件中有语法错误
+
+
 ```
 concurrent = 1
 check_interval = 0
