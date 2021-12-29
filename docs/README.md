@@ -273,6 +273,14 @@ GitLab Runner 版本应与 GitLab 主要和次要版本保持同步。较老的�
 
 最常见的原因：配置文件中有语法错误
 
+#### executors 选择 docker 模式下，镜像如何引入？
+
+有三种镜像引入的方式：
+
+1. runner 级
+2. 流水线级（所有 job 均可以使用）
+3. job级
+
 
 ```
 concurrent = 1
