@@ -1,7 +1,5 @@
 # escape=`
 
-# https://hub.docker.com/_/microsoft-dotnet-framework-runtime/
-# FROM mcr.microsoft.com/dotnet/framework/runtime:4.8
 FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
 LABEL Description="CI for PLCNext" Vendor="Websoft9" Version="0.9"
@@ -54,7 +52,7 @@ RUN `
     }`
   }
 
-# Delete install files, image size optimization
+# Delete install files
 RUN Remove-Item *.zip,*.msi,*.xz,*.exe
 
 VOLUME "C:\solution"
