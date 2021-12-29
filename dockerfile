@@ -11,13 +11,14 @@ LABEL Description="CI for PLCNext" Vendor="Websoft9" Version="0.9"
 ARG PLCNEXT_CLI=PLCnCLI.zip
 ARG PLCNEXT_VS=PLCnext-vs.msi
 ARG VS_INSTALLATION_DIR=C:\minVS
+ARG BASIC_DIR=C:\plcnext\
 
 ENV VS_URL "https://aka.ms/vs/16/release/vs_community.exe" 
 
 SHELL ["powershell", "-Command"]
 
-WORKDIR C:\plcnext\
-COPY packages\* C:\plcnext\
+WORKDIR ${BASIC_DIR}
+COPY packages\* ${BASIC_DIR}
 
 # Download Visual Studio
 RUN Invoke-WebRequest -URI $env:VS_URL -OutFile vs.exe
@@ -39,7 +40,7 @@ RUN Expand-Archive -Path $env:PLCNEXT_CLI -DestinationPath plcli
 # Configure PLCNext cli ENV
 RUN `
     $path = [Environment]::GetEnvironmentVariable('Path', 'Machine') ;`
-    $newpath = $path + ';C:\plcnext\plcli\PLCnCLI\'; `
+    $newpath = $path + ';' + $env:BASIC_DIR + 'plcli\PLCnCLI\'; `
     [Environment]::SetEnvironmentVariable('Path', $newpath, 'Machine') ;`
     $env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') 
 
