@@ -316,3 +316,4 @@ check_interval = 0
 10. [Windows Container](https://docs.microsoft.com/zh-cn/virtualization/windowscontainers/)  
 11. [Install GitLab Runner on Windows](https://docs.gitlab.com/runner/install/windows.html)
 12. [Gitlab CI 指南](https://docs.gitlab.com/ee/ci/introduction/index.html#continuous-integration)
+13. [Gitlab CI 文件语法](https://docs.gitlab.com/ee/ci/yaml/)
