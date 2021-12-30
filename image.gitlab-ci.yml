@@ -10,7 +10,6 @@ image-all-job:
     - docker build -t plcn:latest .
     - echo "build image success"
 
-
 image-tag-job:
   stage: build
   only:
