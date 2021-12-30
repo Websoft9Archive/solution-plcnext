@@ -5,10 +5,10 @@ solution-job:
   artifacts:
     paths:
       - Cli/*.pcwlx
-      - build.log
+      - Impl/Release/*.log
   image: plcn:latest
   script:
     - echo "build sln start"
-    - C:\minVS\MSBuild\Current\bin\MSbuild.exe IIoT_Library.sln | Out-File build.log
+    - C:\minVS\MSBuild\Current\bin\MSbuild.exe IIoT_Library.sln
     - echo "build sln success"
 
