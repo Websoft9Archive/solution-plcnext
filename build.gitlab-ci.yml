@@ -4,21 +4,11 @@ solution-job:
     - main
   artifacts:
     paths:
-      - bin
-      - obj
+      - Cli/*.pcwlx
+      - build.log
+  image: plcn:latest
   script:
     - echo "build sln start"
-    - docker rm -f plcn
-    - docker run -it --rm -d --name plcn -v "$(pwd):C:\solution" plcn
-    - docker exec plcn powershell C:\minVS\MSBuild\Current\bin\MSbuild.exe c:\solution\IIoT_Library.sln
-    - echo "MSbuild vsproject success!"
+    - C:\minVS\MSBuild\Current\bin\MSbuild.exe IIoT_Library.sln | Out-File build.log
+    - echo "build sln success"
 
-test-job:
-  stage: test
-  script:
-    - echo "test"
-
-deploy-job:
-  stage: deploy
-  script:
-    - echo "deploy"
