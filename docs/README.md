@@ -117,12 +117,6 @@ Dockerfile 的设计除了能够顺利安装组件清单之外，还需注意：
 * 项目编译触发：修改 .gitlab-ci.yml 或 开发者Commit 代码到指定的分子（例如：Dev）
 
 另外，目前要求支持所有分支的触发（GitLab CI 默认支持所有分支）
-
-Gitlab-runner默认只有提交tags时才触发，为了支持任何提交，需要在gitlab工程做如下设置：
-
-   ![](https://libs.websoft9.com/Websoft9/DocsPicture/zh/gitlab/gitlab-settrigger1-websoft9.png)
-   
-   ![](https://libs.websoft9.com/Websoft9/DocsPicture/zh/gitlab/gitlab-settrigger2-websoft9.png)
    
 ###  CI jobs
 
@@ -168,6 +162,8 @@ deploy-job:
     - echo "deploy"
 ```
 
+> 如果一个仓库关联一个 Runner 的注册实例（多个标签），则 job 中还需定义 runner 的 tag
+
 
 ## 用户手册
 
@@ -181,9 +177,9 @@ deploy-job:
 
 ### 设置 GitLab CI/CD
 
-GitLab CI/CI 支持：全局级（ [shared runners](https://docs.gitlab.com/ee/ci/runners/runners_scope.html)）、仓库级等作用域模式。  
+GitLab CI/CI 支持：全局级（ [shared runners](https://docs.gitlab.com/ee/ci/runners/runners_scope.html)）、仓库级、用户组等作用域模式。  
 
-本项目中我们使用全局级作用域的模式，即所有 GitLab 中的仓库都具备 CI/CD 能力
+本项目中我们使用仓库级作用域的模式，即给 GitLab 指定的仓库配置 CI/CD 
 
 ### 部署 CI
 
@@ -198,17 +194,23 @@ GitLab CI/CI 支持：全局级（ [shared runners](https://docs.gitlab.com/ee/c
 4. 浏览器登录到 GitLab 后台，获取 GitLab token
    ![](https://libs.websoft9.com/Websoft9/DocsPicture/zh/gitlab/gitlab-gettokenci-websoft9.png)
 
-4. 修改 Gitlab-Runner 的配置文件 `config.toml` 下面几项的值
+5. 修改 Gitlab-Runner 的配置文件 `config.toml` 下面几项的值
 
    * url
    * token
 
-5. 分别运行如下命令
+6. 分别运行如下命令启动 GitLab-Runner
    ```
    ./gitlab-runner.exe stop
    ./gitlab-runner.exe start
    ```
-6. GitLab-Runner 会对远程的 GitLab 仓库进行一个注册动作，把自身 IP 写到 GitLab 中
+6. GitLab-Runner 向 GitLab 仓库注册
+   ```
+   ./gitlab-runner.exe stop register
+   ```
+7. 如果 CI 的 Job 中不打算启用 tag 功能（指定 runner 的流水线 tag），还需如下配置：
+   ![](https://libs.websoft9.com/Websoft9/DocsPicture/zh/gitlab/gitlab-editrunner1-websoft9.png)
+   ![](https://libs.websoft9.com/Websoft9/DocsPicture/zh/gitlab/gitlab-editrunner1-websoft9.png)
 
 ### 镜像
 
@@ -281,6 +283,18 @@ GitLab Runner 版本应与 GitLab 主要和次要版本保持同步。较老的�
 2. 流水线级（所有 job 均可以使用）
 3. job级
 
+#### GitLab 仓库后台显示 Runner正常运行，但仍然无法启动流水线？
+
+如果 runner 向同一个仓库注册多次（产生了多个流水线），则 job 默认无法确认对应哪个流水线，需在 Job 编排文件中增加
+
+```
+job:
+  tags:
+    - ruby
+    - postgres
+```
+
+#### Runner 的标准配置范例
 
 ```
 concurrent = 1
