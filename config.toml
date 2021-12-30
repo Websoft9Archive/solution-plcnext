@@ -1,15 +1,15 @@
 # gitlab-runner configure
 
-concurrent = 1
+concurrent = 5
 check_interval = 0
 
 [session_server]
   session_timeout = 1800
 
 [[runners]]
-  name = "plcn_image"
-  url = "http://43.154.144.20/"
-  token = "WkFPnbDUPxshtEZamN46"
+  name = "image"
+  url = "http://43.154.150.20/"
+  token = "s7hKy7ZRFj4Txh_a1_3r"
   executor = "shell"
   shell = "powershell"
   [runners.custom_build_dir]
@@ -19,20 +19,19 @@ check_interval = 0
     [runners.cache.azure]
 
 [[runners]]
-  name = "plcn_build"
+  name = "Build"
   url = "http://43.154.150.20/"
-  token = "hv4iLf2qPb1e5SghCLfv"
+  token = "GaitpV8iZJFUA2zktXFh"
   executor = "docker-windows"
-  shell = "powershell"
   [runners.custom_build_dir]
   [runners.cache]
     [runners.cache.s3]
     [runners.cache.gcs]
     [runners.cache.azure]
   [runners.docker]
+    pull_policy = ["if-not-present"]
     tls_verify = false
     privileged = false
-    image = "mcr.microsoft.com/windows/servercore:ltsc2019"
     disable_entrypoint_overwrite = false
     oom_kill_disable = false
     disable_cache = false
