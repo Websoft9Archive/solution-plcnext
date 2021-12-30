@@ -9,6 +9,6 @@ solution-job:
   image: plcn:latest
   script:
     - echo "build sln start"
-    - C:\minVS\MSBuild\Current\bin\MSbuild.exe IIoT_Library.sln
+    - msbuild IIoT_Library.sln
     - echo "build sln success"
 
