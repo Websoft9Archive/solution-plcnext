@@ -275,13 +275,27 @@ GitLab Runner 版本应与 GitLab 主要和次要版本保持同步。较老的�
 
 最常见的原因：配置文件中有语法错误
 
-#### executors 选择 docker 模式下，镜像如何引入？
+#### executors 选择 docker 模式下，镜像如何引入，能否引入本地镜像？
 
 有三种镜像引入的方式：
 
 1. runner 级
 2. 流水线级（所有 job 均可以使用）
 3. job级
+
+runner默认配置是从外部仓库pull镜像，如果能从本地获取镜像，需要runner的config.toml加入如下配置：
+```
+  [runners.docker]
+    pull_policy = ["if-not-present"]
+```
+#### Dockerfile 中ENTRYPOINT 如何通过exec模式调用powershell.exe执行脚本？
+
+ENTRYPOINT定义容器启动的程序或脚本，[ENTRYPOINT有两种方式](https://docs.docker.com/engine/reference/builder/)
+
+ENTRYPOINT的exec模式需要跟一个活动进程，如果是一个执行后就退出的程序，需要使其成为常驻进程：
+```
+ENTRYPOINT ["powershell.exe", "-NoExit", "-ExecutionPolicy", "ByPass", '"$env:VS_INSTALLATION_DIR"Common7\\Tools\\Launch-VsDevShell.ps1;&']
+```
 
 #### GitLab 仓库后台显示 Runner正常运行，但仍然无法启动流水线？
 
@@ -297,16 +311,16 @@ job:
 #### Runner 的标准配置范例
 
 ```
-concurrent = 1
+concurrent = 5
 check_interval = 0
 
 [session_server]
   session_timeout = 1800
 
 [[runners]]
-  name = "plcn build"
+  name = "image"
   url = "http://43.154.150.20/"
-  token = "ykZp3oaZtDNaQz9qiHMo"
+  token = "s7hKy7ZRFj4Txh_a1_3r"
   executor = "shell"
   shell = "powershell"
   [runners.custom_build_dir]
@@ -316,16 +330,24 @@ check_interval = 0
     [runners.cache.azure]
 
 [[runners]]
-  name = "test"
-  url = "http://43.154.150.20"
-  token = "3N8Q_QL5GrLB-tyYtmSg"
-  executor = "shell"
-  shell = "pwsh"
+  name = "Build"
+  url = "http://43.154.150.20/"
+  token = "GaitpV8iZJFUA2zktXFh"
+  executor = "docker-windows"
   [runners.custom_build_dir]
   [runners.cache]
     [runners.cache.s3]
     [runners.cache.gcs]
     [runners.cache.azure]
+  [runners.docker]
+    pull_policy = ["if-not-present"]
+    tls_verify = false
+    privileged = false
+    disable_entrypoint_overwrite = false
+    oom_kill_disable = false
+    disable_cache = false
+    volumes = ["c:\\cache"]
+    shm_size = 0
 ```
 
 ## 参考文档
