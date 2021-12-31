@@ -1,6 +1,7 @@
 # escape=`
 
 # https://hub.docker.com/_/microsoft-dotnet-framework-runtime/
+# FROM mcr.microsoft.com/dotnet/framework/runtime:4.8
 FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
 LABEL Description="CI for PLCNext" Vendor="Websoft9" Version="0.9"
@@ -63,4 +64,4 @@ RUN Remove-Item *.zip,*.msi,*.xz,*.exe
 VOLUME "C:\solution"
 
 # Define the entry point for the docker container.
-ENTRYPOINT ["powershell.exe", "-NoLogo", "-ExecutionPolicy", "Bypass", "C:\minVS\Common7\Tools\Launch-VsDevShell.ps1"]
+ENTRYPOINT ["powershell.exe", "-NoExit", "-ExecutionPolicy", "ByPass", "C:\\minVS\\Common7\\Tools\\Launch-VsDevShell.ps1;&"]
