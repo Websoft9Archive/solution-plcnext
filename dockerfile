@@ -5,11 +5,11 @@ FROM mcr.microsoft.com/windows/servercore:ltsc2019
 LABEL Description="CI for PLCNext" Vendor="Websoft9" Version="0.9"
 
 # Packages for build
-ARG VS_INSTALLATION_DIR=C:\minVS
+ARG VS_INSTALLATION_DIR=C:\\minVS
 ARG BASIC_DIR=C:\plcnext\
 ARG VS_URL="https://aka.ms/vs/16/release/vs_community.exe" 
 
-ENV MSBUILD_ENV_SET C:\\minVS\\Common7\\Tools\\Launch-VsDevShell.ps1
+ENV MSBUILD_ENV_SET $VS_INSTALLATION_DIR\\Common7\\Tools\\Launch-VsDevShell.ps1
 
 SHELL ["powershell", "-Command"]
 
@@ -63,4 +63,5 @@ RUN Remove-Item *.zip,*.msi,*.xz,*.exe
 VOLUME "C:\solution"
 
 # Define the entry point for the docker container
-ENTRYPOINT ["powershell.exe", "-NoExit", "-ExecutionPolicy", "ByPass", ".  $env:MSBUILD_ENV_SET;& echo 'msbuild env configure success'"]
+#ENTRYPOINT ["powershell.exe", "-NoExit", "-ExecutionPolicy", "ByPass", "Invoke-Expression  $env:MSBUILD_ENV_SET;& powershell.exe"]
+ENTRYPOINT ["powershell.exe", "Invoke-Expression", "$env:MSBUILD_ENV_SET", ";", "powershell.exe", "-NoExit", "-ExecutionPolicy", "ByPass"]
