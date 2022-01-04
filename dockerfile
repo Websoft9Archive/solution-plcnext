@@ -9,6 +9,7 @@ ARG VS_INSTALLATION_DIR=C:\minVS
 ARG BASIC_DIR=C:\plcnext\
 
 ENV VS_URL "https://aka.ms/vs/16/release/vs_community.exe" 
+ENV ENTRYPOINT_CMD C:\\minVS\\Common7\\Tools\\Launch-VsDevShell.ps1
 
 SHELL ["powershell", "-Command"]
 
@@ -29,7 +30,7 @@ RUN `
 # Get the file of msi, and install it
 RUN `
     $plugin = Get-ChildItem -Name -Filter *.msi;`
-    Start-Process msiexec.exe -ArgumentList "/i", "$plugin", "/quiet", "/norestart" -NoNewWindow -Wait
+    Start-Process $plugin -ArgumentList "/quiet" -wait
 
 # Get the file of plcncli, and unzip it
 RUN `
@@ -61,7 +62,5 @@ RUN Remove-Item *.zip,*.msi,*.xz,*.exe
 
 VOLUME "C:\solution"
 
-ENV ENTRYPOINT_CMD "C:\\minVS\\Common7\\Tools\\Launch-VsDevShell.ps1;&"
-
-# Define the entry point for the docker container.
-ENTRYPOINT ["powershell.exe", "-NoExit", "-ExecutionPolicy", "ByPass", "C:\\minVS\\Common7\\Tools\\Launch-VsDevShell.ps1;&"]
+# Define the entry point for the docker container
+ENTRYPOINT ["powershell.exe", "-NoExit", "-ExecutionPolicy", "ByPass", ".  $env:ENTRYPOINT_CMD;&"]
