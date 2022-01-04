@@ -7,9 +7,9 @@ LABEL Description="CI for PLCNext" Vendor="Websoft9" Version="0.9"
 # Packages for build
 ARG VS_INSTALLATION_DIR=C:\minVS
 ARG BASIC_DIR=C:\plcnext\
+ARG VS_URL="https://aka.ms/vs/16/release/vs_community.exe" 
 
-ENV VS_URL "https://aka.ms/vs/16/release/vs_community.exe" 
-ENV ENTRYPOINT_CMD C:\\minVS\\Common7\\Tools\\Launch-VsDevShell.ps1
+ENV MSBUILD_ENV_SET C:\\minVS\\Common7\\Tools\\Launch-VsDevShell.ps1
 
 SHELL ["powershell", "-Command"]
 
@@ -35,12 +35,12 @@ RUN `
 # Get the file of plcncli, and unzip it
 RUN `
     $cli = Get-ChildItem -Name -Filter *.zip;`
-    Expand-Archive -Path $cli -DestinationPath plcli
+    Expand-Archive -Path $cli -DestinationPath plcncli
 
 # Configure PLCNext cli ENV
 RUN `
     $path = [Environment]::GetEnvironmentVariable('Path', 'Machine') ;`
-    $newpath = $path + ';' + $env:BASIC_DIR + 'plcli\PLCnCLI\'; `
+    $newpath = $path + ';' + $env:BASIC_DIR + 'plcncli\PLCnCLI\'; `
     [Environment]::SetEnvironmentVariable('Path', $newpath, 'Machine') ;`
     $env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') 
 
@@ -63,5 +63,4 @@ RUN Remove-Item *.zip,*.msi,*.xz,*.exe
 VOLUME "C:\solution"
 
 # Define the entry point for the docker container
-#ENTRYPOINT ["powershell.exe", "-NoExit", "-ExecutionPolicy", "ByPass", ".  $env:ENTRYPOINT_CMD;& powershell -NoExit -ExecutionPolicy ByPass"]
-ENTRYPOINT ["powershell.exe", "-NoExit", "-ExecutionPolicy", "ByPass", ".  $env:ENTRYPOINT_CMD;& echo msbuild config complete"]
+ENTRYPOINT ["powershell.exe", "-NoExit", "-ExecutionPolicy", "ByPass", ".  $env:MSBUILD_ENV_SET;& echo 'msbuild env configure success'"]
