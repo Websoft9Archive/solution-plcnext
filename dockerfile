@@ -63,4 +63,5 @@ RUN Remove-Item *.zip,*.msi,*.xz,*.exe
 VOLUME "C:\solution"
 
 # Define the entry point for the docker container
-ENTRYPOINT ["powershell.exe", "-NoExit", "-ExecutionPolicy", "ByPass", ".  $env:ENTRYPOINT_CMD;& powershell -NoExit -ExecutionPolicy ByPass"]
+#ENTRYPOINT ["powershell.exe", "-NoExit", "-ExecutionPolicy", "ByPass", ".  $env:ENTRYPOINT_CMD;& powershell -NoExit -ExecutionPolicy ByPass"]
+ENTRYPOINT ["powershell.exe", "-NoExit", "-ExecutionPolicy", "ByPass", ".  $env:ENTRYPOINT_CMD;& echo msbuild config complete"]
