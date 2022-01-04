@@ -367,3 +367,4 @@ check_interval = 0
 11. [Install GitLab Runner on Windows](https://docs.gitlab.com/runner/install/windows.html)
 12. [Gitlab CI 指南](https://docs.gitlab.com/ee/ci/introduction/index.html#continuous-integration)
 13. [Gitlab CI 文件语法](https://docs.gitlab.com/ee/ci/yaml/)
+14. [PowerShell.exe 语法](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_powershell_exe?view=powershell-5.1)
