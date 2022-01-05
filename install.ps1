@@ -12,8 +12,4 @@ Invoke-WebRequest -URI $runner_url -OutFile gitlab-runner.exe
 .\gitlab-runner.exe install
 .\gitlab-runner.exe start
 
-# Use the register template
-Copy-Item "../config.toml" -Destination "./"
 
-# Pull image 
-docker pull mcr.microsoft.com/windows/servercore:ltsc2019
