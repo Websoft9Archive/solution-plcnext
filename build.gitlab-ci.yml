@@ -1,14 +1,32 @@
-solution-job:
+stages:
+  - build
+  - packages
+
+image: plcn:latest
+
+cache:
+  paths:
+    - Cli/*.pcwlx
+    - Impl/Release/*.log
+
+build-project-job:
   stage: build
+  only:
+    - main
+  script:
+    - echo "build sln start"
+    - msbuild IIoT_Library.sln
+    - echo "build sln success"
+
+package-upload-job:
+  stage: packages
   only:
     - main
   artifacts:
     paths:
       - Cli/*.pcwlx
       - Impl/Release/*.log
-  image: plcn:latest
   script:
-    - echo "build sln start"
-    - msbuild IIoT_Library.sln
-    - echo "build sln success"
+      - echo "upload build project and logs"
+
 
