@@ -1,3 +1,8 @@
+stages:
+  - build
+  - tag
+  - push-image
+
 image-all-job:
   stage: build
   only:
@@ -11,7 +16,7 @@ image-all-job:
     - echo "build image success"
 
 image-tag-job:
-  stage: build
+  stage: tag
   only:
     - tags
   script:
@@ -19,3 +24,11 @@ image-tag-job:
     - docker build -t plcn:latest .
     - docker build -t plcn:"$CI_COMMIT_REF_NAME" .
     - echo "build image success"
+
+push-image-job:
+  stage: push-image
+  only:
+    - tags
+  script:
+    - echo "push Image plcn:$CI_COMMIT_REF_NAME start"
+    - echo "push image success"
