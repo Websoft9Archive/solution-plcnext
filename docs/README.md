@@ -208,6 +208,11 @@ GitLab CI/CI 支持：全局级（ [shared runners](https://docs.gitlab.com/ee/c
    ```
    ./gitlab-runner.exe stop register
    ```
+   runner默认配置是从外部仓库pull镜像，如果能从本地获取镜像，需要runner的config.toml加入如下配置：
+   ```
+    [runners.docker]
+      pull_policy = ["if-not-present"]
+   ```
 7. 如果 CI 的 Job 中不打算启用 tag 功能（指定 runner 的流水线 tag），还需如下配置：
    ![](https://libs.websoft9.com/Websoft9/DocsPicture/zh/gitlab/gitlab-editrunner1-websoft9.png)
    ![](https://libs.websoft9.com/Websoft9/DocsPicture/zh/gitlab/gitlab-editrunner1-websoft9.png)
