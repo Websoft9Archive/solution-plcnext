@@ -215,7 +215,7 @@ GitLab CI/CI 支持：全局级（ [shared runners](https://docs.gitlab.com/ee/c
    ```
 7. 如果 CI 的 Job 中不打算启用 tag 功能（指定 runner 的流水线 tag），还需如下配置：
    ![](https://libs.websoft9.com/Websoft9/DocsPicture/zh/gitlab/gitlab-editrunner1-websoft9.png)
-   ![](https://libs.websoft9.com/Websoft9/DocsPicture/zh/gitlab/gitlab-editrunner1-websoft9.png)
+   ![](https://libs.websoft9.com/Websoft9/DocsPicture/zh/gitlab/gitlab-editrunner2-websoft9.png)
 
 ### 镜像
 
