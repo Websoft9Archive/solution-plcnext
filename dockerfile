@@ -5,16 +5,17 @@ FROM mcr.microsoft.com/windows/servercore:ltsc2019
 LABEL Description="CI for PLCNext" Vendor="Websoft9" Version="0.9"
 
 # Packages for build
-ARG VS_INSTALLATION_DIR=C:\\minVS
-ARG BASIC_DIR=C:\plcnext\
+ARG VS_INSTALLATION_DIR=C:\minVS
+ARG BASIC_DIR=C:\plcnext
 ARG VS_URL="https://aka.ms/vs/16/release/vs_community.exe" 
+ARG PLCNCLI_PATH=$BASIC_DIR\plcncli\PLCnCLI
 
-ENV MSBUILD_ENV_SET $VS_INSTALLATION_DIR\\Common7\\Tools\\Launch-VsDevShell.ps1
+ENV MSBUILD_ENV_SET $VS_INSTALLATION_DIR\Common7\Tools\Launch-VsDevShell.ps1
 
 SHELL ["powershell", "-Command"]
 
 WORKDIR ${BASIC_DIR}
-COPY packages\* ${BASIC_DIR}
+COPY packages\* ${BASIC_DIR}\
 
 # Download Visual Studio
 RUN Invoke-WebRequest -URI $env:VS_URL -OutFile vs.exe
@@ -25,7 +26,7 @@ RUN `
     "--add", "Microsoft.Net.Component.4.TargetingPack", `
     "--add", "Microsoft.VisualStudio.Component.Roslyn.Compiler", `
     "--add", "Microsoft.VisualStudio.Component.VC.14.20.x86.x64", `
-    "--quiet", "--norestart" -wait -NoNewWindow
+    "--quiet", "--norestart" -wait -NoNewWindow -RedirectStandardOutput installvs.log
 
 # Get the file of msi, and install it
 RUN `
@@ -40,7 +41,7 @@ RUN `
 # Configure PLCNext cli ENV
 RUN `
     $path = [Environment]::GetEnvironmentVariable('Path', 'Machine') ;`
-    $newpath = $path + ';' + $env:BASIC_DIR + 'plcncli\PLCnCLI\'; `
+    $newpath = $path + ';' + $env:PLCNCLI_PATH ;`
     [Environment]::SetEnvironmentVariable('Path', $newpath, 'Machine') ;`
     $env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') 
 
@@ -63,5 +64,4 @@ RUN Remove-Item *.zip,*.msi,*.xz,*.exe
 VOLUME "C:\solution"
 
 # Define the entry point for the docker container
-#ENTRYPOINT ["powershell.exe", "-NoExit", "-ExecutionPolicy", "ByPass", "Invoke-Expression  $env:MSBUILD_ENV_SET;& powershell.exe"]
 ENTRYPOINT ["powershell.exe", "Invoke-Expression", "$env:MSBUILD_ENV_SET", ";", "powershell.exe", "-NoExit", "-ExecutionPolicy", "ByPass"]
