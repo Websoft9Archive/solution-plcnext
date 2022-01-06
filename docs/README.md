@@ -197,7 +197,7 @@ GitLab CI/CI 支持：全局级（ [shared runners](https://docs.gitlab.com/ee/c
 5. 修改 Gitlab-Runner 的配置文件 `runner-config.ps1` 下面几项的值
 
    * url
-   * token
+   * registration-toke
 
 6. 运行如下命令启动 GitLab-Runner
    ```
