@@ -194,28 +194,16 @@ GitLab CI/CI 支持：全局级（ [shared runners](https://docs.gitlab.com/ee/c
 4. 浏览器登录到 GitLab 后台，获取 GitLab token
    ![](https://libs.websoft9.com/Websoft9/DocsPicture/zh/gitlab/gitlab-gettokenci-websoft9.png)
 
-5. 修改 Gitlab-Runner 的配置文件 `config.toml` 下面几项的值
+5. 修改 Gitlab-Runner 的配置文件 `runner-config.ps1` 下面几项的值
 
    * url
    * token
 
-6. 分别运行如下命令启动 GitLab-Runner
+6. 运行如下命令启动 GitLab-Runner
    ```
-   ./gitlab-runner.exe stop
-   ./gitlab-runner.exe start
+   ./runner-config.ps1
    ```
-6. GitLab-Runner 向 GitLab 仓库注册
-   ```
-   ./gitlab-runner.exe stop register
-   ```
-   runner默认配置是从外部仓库pull镜像，如果能从本地获取镜像，需要runner的config.toml加入如下配置：
-   ```
-    [runners.docker]
-      pull_policy = ["if-not-present"]
-   ```
-7. 如果 CI 的 Job 中不打算启用 tag 功能（指定 runner 的流水线 tag），还需如下配置：
-   ![](https://libs.websoft9.com/Websoft9/DocsPicture/zh/gitlab/gitlab-editrunner1-websoft9.png)
-   ![](https://libs.websoft9.com/Websoft9/DocsPicture/zh/gitlab/gitlab-editrunner2-websoft9.png)
+
 
 ### 镜像
 
