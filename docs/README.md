@@ -122,12 +122,9 @@ build -t plcn:latest --build-arg VS_INSTALLATION_DIR="C:\VisualStudi2019" .
 * WORKDIR path 配置工作目录，同时切换到该目录。可以使用多个WORKDIR指令，后续参数如果是相对路径，则会基于之前的命令指定的路径
 
 * ENTRYPOINT
-为了保证容器能够持续运行，ENTRYPOINT启动进程需要是一个常驻进程，否则容器会运行后立即退出。它有两种模式：  
-shell模式  
-ENTRYPOINT ["Invoke-Expression $env:MSBUILD_ENV_SET;powershell.exe -NoExit -ExecutionPolicy ByPass"]
-
-exec模式  
-ENTRYPOINT ["powershell.exe", "Invoke-Expression", "$env:MSBUILD_ENV_SET", ";", "powershell.exe", "-NoExit", "-ExecutionPolicy", "ByPass"]
+为了保证容器能够持续运行，ENTRYPOINT启动进程需要是一个常驻进程，否则容器会运行后立即退出。它有两种模式  
+shell模式:ENTRYPOINT ["Invoke-Expression $env:MSBUILD_ENV_SET;powershell.exe -NoExit -ExecutionPolicy ByPass"]
+exec模式:ENTRYPOINT ["powershell.exe", "Invoke-Expression", "$env:MSBUILD_ENV_SET", ";", "powershell.exe", "-NoExit", "-ExecutionPolicy", "ByPass"]
 
 * EXPOSE <port> [<port>...]  Docker服务器容器对外映射的容器端口号
 
