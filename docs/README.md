@@ -101,9 +101,9 @@ Dockerfile 的设计除了能够顺利实现应用功能之外，还需注意：
 
 Dockerfile的常用基本指令说明如下：
 
-  -- FROM <image> 指定一个构建镜像的基础源镜像
+  - FROM <image> 指定一个构建镜像的基础源镜像
 
-  -- MAINTAINER <name> <email> <version> 指定作者和版本等维护信息
+  - MAINTAINER <name> <email> <version> 指定作者和版本等维护信息
 
 3. RUN "command" "param1" "param2" 在镜像中执行脚本命令，例如powershell脚本命令
 
