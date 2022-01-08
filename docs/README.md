@@ -145,7 +145,7 @@ build -t plcn:latest --build-arg VS_INSTALLATION_DIR="C:\VisualStudi2019" .
 
 自动化CI的触发条件需满足客户的开发流程。本项目当前的触发条件为：  
 
-* 镜像构建触发：修改 .gitlab-ci.yml 或 更新包
+* 镜像构建触发：修改 .gitlab-ci.yml，更新包 或 release新版本
 * 项目编译触发：修改 .gitlab-ci.yml 或 开发者Commit 代码到指定的分子（例如：Dev）
 
 另外，目前要求支持所有分支的触发（GitLab CI 默认支持所有分支）
