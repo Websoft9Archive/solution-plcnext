@@ -107,12 +107,10 @@ Dockerfile的常用基本指令说明如下：
 
 * RUN "command" "param1" "param2" 在镜像中执行脚本命令，例如powershell脚本命令
 
-*EVN <key> <value> 设置容器的环境变量，可以让其后面的RUN命令使用
-
+* EVN <key> <value> 设置容器的环境变量，可以让其后面的RUN命令使用  
 docker run -it -e MSBUILD_ENV_SET="C:\VisualStudi2019\Common7\Tools\Launch-VsDevShell.ps1" plcn
 
-* ARG <key>=<value> 设置容器的变量，在build镜像时起作用
-
+* ARG <key>=<value> 设置容器的变量，在build镜像时起作用  
 build -t plcn:latest --build-arg VS_INSTALLATION_DIR="C:\VisualStudi2019" .
 
 * COPY <src> <dest>  COPY复制文件到镜像，支持模糊匹配。
