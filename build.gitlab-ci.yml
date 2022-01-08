@@ -4,11 +4,10 @@ stages:
 
 default:
   image: plcn:latest
-
-cache:
-  paths:
-    - Cli/*.pcwlx
-    - Impl/Release/*.log
+  cache:
+    paths:
+      - Cli/*.pcwlx
+      - Impl/Release/*.log
 
 build-project-job:
   stage: build
