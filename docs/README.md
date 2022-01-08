@@ -76,9 +76,7 @@ plcncli build --path project -t AXCF2152
 
 > PLCNext plugin  目前仅支持 VS2019
 
-#### Dockerfile
-
-##### 设计原则
+#### Dockerfile设计原则
 Dockerfile 的设计除了能够顺利实现应用功能之外，还需注意：
 
 **灵活性**
@@ -97,7 +95,7 @@ Dockerfile 的设计除了能够顺利实现应用功能之外，还需注意：
 1. 组件升级
 2. 组件修改
 
-##### 使用说明
+#### Dockerfile使用说明
 
 Dockerfile的常用基本指令说明如下：
 
@@ -143,58 +141,50 @@ build -t plcn:latest --build-arg VS_INSTALLATION_DIR="C:\VisualStudi2019" .
 
 ### 触发机制
 
-自动化CI的触发条件需满足客户的开发流程。本项目当前的触发条件为：  
+当gitlab-runner注册完成后，相当于在代码仓库和gitlab-runner之间建立一个桥梁，通过监控.gitlab-ci.yml告知github-runner需要做的工作。本项目当前的触发条件为：  
 
 * 镜像构建触发：修改 .gitlab-ci.yml，更新包 或 release新版本
 * 项目编译触发：修改 .gitlab-ci.yml 或 开发者Commit 代码到指定的分子（例如：Dev）
 
 另外，目前要求支持所有分支的触发（GitLab CI 默认支持所有分支）
    
-###  CI jobs
+####  CI文件的设计原则
 
-本项目的 CI jobs主要通过  .gitlab-ci.yml 编排文件实现。  
+**阶段性**
+1. 多个阶段对应多个JOB, 结构清晰
+2. 自定义阶段名，提高业务易读性
 
-GitLab CI 编排的文件原理：多个 Job 组成，每个 Job 需设置其 Stage 的值（build, test, deploy等）以及触发条件。  
+**可读易用性**
+1. 通过全局方式引用镜像，减少维护
+2. 必要的日志信息
 
-每次项目提交的适合，Runner 会将 .gitlab-ci.yml 中的 Jobs 启动到流水线中开始运作。  
+#### CI文件使用说明
 
-下面是一个 .gitlab-ci.yml 文件模板：  
+##### 全局关键字
+  
+* stages 定义流水线阶段的名称和顺序
+  
+* default	自定义默认值
+  
+* variables	所有job共用的全局变量
 
-```
-image-job:
-  stage: build
-  only:
-    changes:
-      - docker/*
-  script:
-    - echo "build Image start"
-    - cd docker
-    - docker build -t plcn .
-    - echo "build image success!"
+* include	导入其他YAML文件配置
 
-solution-job:
-  stage: build
-  only:
-    - main
-  script:
-    - echo "build sln start"
-    - docker rm -f plcn
-    - docker run -it --rm -d --name plcn -v "$(pwd):C:\solution" plcn
-    - docker exec plcn powershell C:\minVS\MSBuild\Current\bin\MSbuild.exe c:\solution\IIoT_Library.sln
-    - echo "MSbuild vsproject success!"
+##### JOB关键字
+  
+* variables JOB内部变量，覆盖全局variables
+  
+* before_script	JOB之后执行的一组命令
+  
+* after_script	JOB之前执行的一组命令
+  
+* image	引用docker镜像
 
-test-job:
-  stage: test
-  script:
-    - echo "test"
+* tags gitlab-runner的相关tag触发
+  
+* services	使用其它Docker服务镜像
 
-deploy-job:
-  stage: deploy
-  script:
-    - echo "deploy"
-```
-
-> 如果一个仓库关联一个 Runner 的注册实例（多个标签），则 job 中还需定义 runner 的 tag
+* only 设定触发条件
 
 
 ## 用户手册
