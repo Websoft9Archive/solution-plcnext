@@ -101,29 +101,29 @@ Dockerfile 的设计除了能够顺利实现应用功能之外，还需注意：
 
 Dockerfile的常用基本指令说明如下：
 
-  - FROM <image> 指定一个构建镜像的基础源镜像
+* FROM <image> 指定一个构建镜像的基础源镜像
 
-  - MAINTAINER <name> <email> <version> 指定作者和版本等维护信息
+* MAINTAINER <name> <email> <version> 指定作者和版本等维护信息
 
-3. RUN "command" "param1" "param2" 在镜像中执行脚本命令，例如powershell脚本命令
+* RUN "command" "param1" "param2" 在镜像中执行脚本命令，例如powershell脚本命令
 
-4. EVN <key> <value> 设置容器的环境变量，可以让其后面的RUN命令使用
+*EVN <key> <value> 设置容器的环境变量，可以让其后面的RUN命令使用
 
 docker run -it -e MSBUILD_ENV_SET="C:\VisualStudi2019\Common7\Tools\Launch-VsDevShell.ps1" plcn
 
-5. ARG <key>=<value> 设置容器的变量，在build镜像时起作用
+* ARG <key>=<value> 设置容器的变量，在build镜像时起作用
 
 build -t plcn:latest --build-arg VS_INSTALLATION_DIR="C:\VisualStudi2019" .
 
-6. COPY <src> <dest>  COPY复制文件到镜像，支持模糊匹配。
+* COPY <src> <dest>  COPY复制文件到镜像，支持模糊匹配。
 
-7. ADD  <src> <dest> 和COPY功能类似，同时会自动解压缩。
+* ADD  <src> <dest> 和COPY功能类似，同时会自动解压缩。
 
-8. VOLUME ["path"] 在主机上创建一个挂载，挂载到容器的指定路径。docker run -v命令也能完成这个操作，而且更强大。
+* VOLUME ["path"] 在主机上创建一个挂载，挂载到容器的指定路径。docker run -v命令也能完成这个操作，而且更强大。
 
-9. WORKDIR path 配置工作目录，同时切换到该目录。可以使用多个WORKDIR指令，后续参数如果是相对路径，则会基于之前的命令指定的路径
+* WORKDIR path 配置工作目录，同时切换到该目录。可以使用多个WORKDIR指令，后续参数如果是相对路径，则会基于之前的命令指定的路径
 
-10. ENTRYPOINT
+* ENTRYPOINT
 为了保证容器能够持续运行，ENTRYPOINT启动进程需要是一个常驻进程，否则容器会运行后立即退出。它有两种模式：
 shell模式
 ENTRYPOINT ["Invoke-Expression $env:MSBUILD_ENV_SET;powershell.exe -NoExit -ExecutionPolicy ByPass"]
@@ -131,7 +131,7 @@ ENTRYPOINT ["Invoke-Expression $env:MSBUILD_ENV_SET;powershell.exe -NoExit -Exec
 exec模式
 ENTRYPOINT ["powershell.exe", "Invoke-Expression", "$env:MSBUILD_ENV_SET", ";", "powershell.exe", "-NoExit", "-ExecutionPolicy", "ByPass"]
 
-11. EXPOSE <port> [<port>...]  Docker服务器容器对外映射的容器端口号
+* EXPOSE <port> [<port>...]  Docker服务器容器对外映射的容器端口号
 
 
 #### 环境维护
